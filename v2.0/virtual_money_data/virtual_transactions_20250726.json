@@ -1,0 +1,100 @@
+{
+  "date": "20250726",
+  "timestamp": "2025-07-26 01:17:16",
+  "portfolio_summary": {
+    "available_cash": 17150,
+    "total_invested": 482850,
+    "total_value": 500000,
+    "daily_pnl": 0,
+    "daily_return": 0.0,
+    "cumulative_return": 0.0,
+    "cumulative_days": 1,
+    "max_capital": 500000,
+    "min_capital": 500000,
+    "drawdown": 0.0,
+    "original_capital": 500000
+  },
+  "buy_transactions": [
+    {
+      "transaction_id": "BUY_20250726_011716_A462860",
+      "timestamp": "2025-07-26 01:17:16",
+      "type": "buy",
+      "code": "A462860",
+      "name": "더즌",
+      "quantity": 16,
+      "price": 5930,
+      "amount": 94880,
+      "condition_seq": 3,
+      "buy_transaction_id": "",
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": ""
+    },
+    {
+      "transaction_id": "BUY_20250726_011716_A201490",
+      "timestamp": "2025-07-26 01:17:16",
+      "type": "buy",
+      "code": "A201490",
+      "name": "미투온",
+      "quantity": 16,
+      "price": 6130,
+      "amount": 98080,
+      "condition_seq": 3,
+      "buy_transaction_id": "",
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": ""
+    },
+    {
+      "transaction_id": "BUY_20250726_011716_A034220",
+      "timestamp": "2025-07-26 01:17:16",
+      "type": "buy",
+      "code": "A034220",
+      "name": "LG디스플레이",
+      "quantity": 9,
+      "price": 10050,
+      "amount": 90450,
+      "condition_seq": 6,
+      "buy_transaction_id": "",
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": ""
+    },
+    {
+      "transaction_id": "BUY_20250726_011716_A054920",
+      "timestamp": "2025-07-26 01:17:16",
+      "type": "buy",
+      "code": "A054920",
+      "name": "한컴위드",
+      "quantity": 20,
+      "price": 4980,
+      "amount": 99600,
+      "condition_seq": 3,
+      "buy_transaction_id": "",
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": ""
+    },
+    {
+      "transaction_id": "BUY_20250726_011716_A192250",
+      "timestamp": "2025-07-26 01:17:16",
+      "type": "buy",
+      "code": "A192250",
+      "name": "케이사인",
+      "quantity": 8,
+      "price": 12480,
+      "amount": 99840,
+      "condition_seq": 3,
+      "buy_transaction_id": "",
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": ""
+    }
+  ],
+  "sell_transactions": [],
+  "daily_stats": {
+    "total_buy_count": 5,
+    "total_sell_count": 0,
+    "active_positions": 5
+  }
+}

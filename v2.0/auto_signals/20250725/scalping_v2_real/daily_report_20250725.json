@@ -1,0 +1,15 @@
+{
+  "date": "20250725",
+  "summary": {
+    "initial_capital": 500000,
+    "final_capital": 500000,
+    "daily_pnl": 0,
+    "daily_return": 0.0,
+    "total_trades": 0,
+    "completed_trades": 0,
+    "remaining_positions": 0
+  },
+  "trades": [],
+  "traded_stocks": [],
+  "final_positions": []
+}

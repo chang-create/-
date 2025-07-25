@@ -1,0 +1,87 @@
+{
+  "portfolio_summary": {
+    "initial_capital": 500000,
+    "available_cash": 17150,
+    "positions_value": 0,
+    "total_value": 17150,
+    "daily_pnl": 0,
+    "total_pnl": -482850,
+    "daily_return": 0.0,
+    "total_return": -96.57,
+    "cash_ratio": 100.0
+  },
+  "trading_statistics": {
+    "total_buy_trades": 5,
+    "total_sell_trades": 0,
+    "profit_trades": 0,
+    "loss_trades": 0,
+    "win_rate": 0,
+    "avg_profit_rate": 0,
+    "avg_loss_rate": 0,
+    "total_profit_amount": 0,
+    "total_loss_amount": 0
+  },
+  "transactions": [
+    {
+      "timestamp": "2025-07-25T22:38:49.169041",
+      "type": "buy",
+      "code": "A462860",
+      "name": "더즌",
+      "price": 5930,
+      "quantity": 16,
+      "amount": 94880,
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": ""
+    },
+    {
+      "timestamp": "2025-07-25T22:38:49.487295",
+      "type": "buy",
+      "code": "A201490",
+      "name": "미투온",
+      "price": 6130,
+      "quantity": 16,
+      "amount": 98080,
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": ""
+    },
+    {
+      "timestamp": "2025-07-25T22:38:49.803414",
+      "type": "buy",
+      "code": "A034220",
+      "name": "LG디스플레이",
+      "price": 10050,
+      "quantity": 9,
+      "amount": 90450,
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": ""
+    },
+    {
+      "timestamp": "2025-07-25T22:38:50.422703",
+      "type": "buy",
+      "code": "A054920",
+      "name": "한컴위드",
+      "price": 4980,
+      "quantity": 20,
+      "amount": 99600,
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": ""
+    },
+    {
+      "timestamp": "2025-07-25T22:38:50.739309",
+      "type": "buy",
+      "code": "A192250",
+      "name": "케이사인",
+      "price": 12480,
+      "quantity": 8,
+      "amount": 99840,
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": ""
+    }
+  ],
+  "last_updated": "2025-07-25T22:38:50.739309"
+}

@@ -1,0 +1,73 @@
+{
+  "positions": [
+    {
+      "code": "A462860",
+      "name": "더즌",
+      "buy_price": 5930,
+      "quantity": 16,
+      "buy_time": "2025-07-25T22:38:49.173077",
+      "condition_seq": 3,
+      "buy_amount": 303796811630,
+      "cost": 94880
+    },
+    {
+      "code": "A201490",
+      "name": "미투온",
+      "buy_price": 6130,
+      "quantity": 16,
+      "buy_time": "2025-07-25T22:38:49.488298",
+      "condition_seq": 3,
+      "buy_amount": 164179924860,
+      "cost": 98080
+    },
+    {
+      "code": "A034220",
+      "name": "LG디스플레이",
+      "buy_price": 10050,
+      "quantity": 9,
+      "buy_time": "2025-07-25T22:38:49.804977",
+      "condition_seq": 6,
+      "buy_amount": 124447119900,
+      "cost": 90450
+    },
+    {
+      "code": "A054920",
+      "name": "한컴위드",
+      "buy_price": 4980,
+      "quantity": 20,
+      "buy_time": "2025-07-25T22:38:50.425704",
+      "condition_seq": 3,
+      "buy_amount": 78038208540,
+      "cost": 99600
+    },
+    {
+      "code": "A192250",
+      "name": "케이사인",
+      "buy_price": 12480,
+      "quantity": 8,
+      "buy_time": "2025-07-25T22:38:50.742386",
+      "condition_seq": 3,
+      "buy_amount": 64950425280,
+      "cost": 99840
+    }
+  ],
+  "traded_today": [
+    "A201490",
+    "A192250",
+    "A034220",
+    "A054920",
+    "A462860"
+  ],
+  "blocked_codes": [],
+  "portfolio_summary": {
+    "total_positions": 5,
+    "max_positions": 5,
+    "available_slots": 0,
+    "total_invested": 482850,
+    "traded_today_count": 5,
+    "blocked_codes_count": 0,
+    "is_full": true,
+    "utilization_rate": 100.0
+  },
+  "last_updated": "2025-07-25T22:38:50.743388"
+}

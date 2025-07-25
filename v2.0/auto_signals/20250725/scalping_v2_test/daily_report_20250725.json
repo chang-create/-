@@ -1,0 +1,142 @@
+{
+  "date": "20250725",
+  "summary": {
+    "initial_capital": 500000,
+    "final_capital": 500000,
+    "daily_pnl": 0,
+    "daily_return": 0.0,
+    "total_trades": 5,
+    "completed_trades": 5,
+    "remaining_positions": 0
+  },
+  "trades": [
+    {
+      "type": "buy",
+      "code": "A462860",
+      "name": "더즌",
+      "price": 5930,
+      "quantity": 16,
+      "amount": 94880,
+      "buy_amount": 303796811630,
+      "time": "21:59:01",
+      "condition_seq": 3
+    },
+    {
+      "type": "buy",
+      "code": "A201490",
+      "name": "미투온",
+      "price": 6130,
+      "quantity": 16,
+      "amount": 98080,
+      "buy_amount": 164179924860,
+      "time": "21:59:01",
+      "condition_seq": 3
+    },
+    {
+      "type": "buy",
+      "code": "A034220",
+      "name": "LG디스플레이",
+      "price": 10050,
+      "quantity": 9,
+      "amount": 90450,
+      "buy_amount": 124447119900,
+      "time": "21:59:01",
+      "condition_seq": 6
+    },
+    {
+      "type": "buy",
+      "code": "A054920",
+      "name": "한컴위드",
+      "price": 4980,
+      "quantity": 20,
+      "amount": 99600,
+      "buy_amount": 78038208540,
+      "time": "21:59:02",
+      "condition_seq": 3
+    },
+    {
+      "type": "buy",
+      "code": "A192250",
+      "name": "케이사인",
+      "price": 12480,
+      "quantity": 8,
+      "amount": 99840,
+      "buy_amount": 64950425280,
+      "time": "21:59:02",
+      "condition_seq": 3
+    },
+    {
+      "type": "sell",
+      "code": "A462860",
+      "name": "더즌",
+      "buy_price": 5930,
+      "sell_price": 5930,
+      "quantity": 16,
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": "강제청산",
+      "time": "21:59:10",
+      "hold_duration": "0:00:09"
+    },
+    {
+      "type": "sell",
+      "code": "A201490",
+      "name": "미투온",
+      "buy_price": 6130,
+      "sell_price": 6130,
+      "quantity": 16,
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": "강제청산",
+      "time": "21:59:10",
+      "hold_duration": "0:00:09"
+    },
+    {
+      "type": "sell",
+      "code": "A034220",
+      "name": "LG디스플레이",
+      "buy_price": 10050,
+      "sell_price": 10050,
+      "quantity": 9,
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": "강제청산",
+      "time": "21:59:10",
+      "hold_duration": "0:00:09"
+    },
+    {
+      "type": "sell",
+      "code": "A054920",
+      "name": "한컴위드",
+      "buy_price": 4980,
+      "sell_price": 4980,
+      "quantity": 20,
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": "강제청산",
+      "time": "21:59:10",
+      "hold_duration": "0:00:08"
+    },
+    {
+      "type": "sell",
+      "code": "A192250",
+      "name": "케이사인",
+      "buy_price": 12480,
+      "sell_price": 12480,
+      "quantity": 8,
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": "강제청산",
+      "time": "21:59:11",
+      "hold_duration": "0:00:08"
+    }
+  ],
+  "traded_stocks": [
+    "A192250",
+    "A034220",
+    "A462860",
+    "A201490",
+    "A054920"
+  ],
+  "final_positions": []
+}
