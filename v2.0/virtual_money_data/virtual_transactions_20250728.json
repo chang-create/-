@@ -1,0 +1,56 @@
+{
+  "date": "20250728",
+  "timestamp": "2025-07-28 03:19:44",
+  "portfolio_summary": {
+    "available_cash": 1012000,
+    "total_invested": 0,
+    "total_value": 1012000,
+    "daily_pnl": 12000,
+    "daily_return": 1.2,
+    "cumulative_return": 1.2,
+    "cumulative_days": 1,
+    "max_capital": 1012000,
+    "min_capital": 1000000,
+    "drawdown": 0.0,
+    "original_capital": 1000000
+  },
+  "buy_transactions": [
+    {
+      "transaction_id": "BUY_20250728_031944_A005930",
+      "timestamp": "2025-07-28 03:19:44",
+      "type": "buy",
+      "code": "A005930",
+      "name": "삼성전자",
+      "quantity": 4,
+      "price": 75000,
+      "amount": 300000,
+      "condition_seq": 0,
+      "buy_transaction_id": "",
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": ""
+    }
+  ],
+  "sell_transactions": [
+    {
+      "transaction_id": "SELL_20250728_031944_A005930",
+      "timestamp": "2025-07-28 03:19:44",
+      "type": "sell",
+      "code": "A005930",
+      "name": "삼성전자",
+      "quantity": 4,
+      "price": 78000,
+      "amount": 312000,
+      "condition_seq": 0,
+      "buy_transaction_id": "BUY_20250728_031944_A005930",
+      "profit_amount": 12000,
+      "profit_rate": 4.0,
+      "reason": "profit"
+    }
+  ],
+  "daily_stats": {
+    "total_buy_count": 1,
+    "total_sell_count": 1,
+    "active_positions": 0
+  }
+}
