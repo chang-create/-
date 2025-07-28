@@ -1,0 +1,116 @@
+{
+  "date": "20250728",
+  "timestamp": "2025-07-28 03:21:01",
+  "portfolio_summary": {
+    "available_cash": 1018000,
+    "total_invested": 0,
+    "total_value": 1018000,
+    "daily_pnl": 30000,
+    "daily_return": 3.0,
+    "cumulative_return": 1.7999999999999998,
+    "cumulative_days": 1,
+    "max_capital": 1030000,
+    "min_capital": 1000000,
+    "drawdown": 1.1650485436893203,
+    "original_capital": 1000000
+  },
+  "buy_transactions": [
+    {
+      "transaction_id": "BUY_20250728_031944_A005930",
+      "timestamp": "2025-07-28 03:19:44",
+      "type": "buy",
+      "code": "A005930",
+      "name": "삼성전자",
+      "quantity": 4,
+      "price": 75000,
+      "amount": 300000,
+      "condition_seq": 0,
+      "buy_transaction_id": "",
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": ""
+    },
+    {
+      "transaction_id": "BUY_20250728_032101_A005930",
+      "timestamp": "2025-07-28 03:21:01",
+      "type": "buy",
+      "code": "A005930",
+      "name": "삼성전자",
+      "quantity": 4,
+      "price": 75000,
+      "amount": 300000,
+      "condition_seq": 0,
+      "buy_transaction_id": "",
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": ""
+    },
+    {
+      "transaction_id": "BUY_20250728_032101_A000660",
+      "timestamp": "2025-07-28 03:21:01",
+      "type": "buy",
+      "code": "A000660",
+      "name": "SK하이닉스",
+      "quantity": 4,
+      "price": 100000,
+      "amount": 400000,
+      "condition_seq": 0,
+      "buy_transaction_id": "",
+      "profit_amount": 0,
+      "profit_rate": 0.0,
+      "reason": ""
+    }
+  ],
+  "sell_transactions": [
+    {
+      "transaction_id": "SELL_20250728_031944_A005930",
+      "timestamp": "2025-07-28 03:19:44",
+      "type": "sell",
+      "code": "A005930",
+      "name": "삼성전자",
+      "quantity": 4,
+      "price": 78000,
+      "amount": 312000,
+      "condition_seq": 0,
+      "buy_transaction_id": "BUY_20250728_031944_A005930",
+      "profit_amount": 12000,
+      "profit_rate": 4.0,
+      "reason": "profit"
+    },
+    {
+      "transaction_id": "SELL_20250728_032101_A005930",
+      "timestamp": "2025-07-28 03:21:01",
+      "type": "sell",
+      "code": "A005930",
+      "name": "삼성전자",
+      "quantity": 4,
+      "price": 82500,
+      "amount": 330000,
+      "condition_seq": 0,
+      "buy_transaction_id": "BUY_20250728_032101_A005930",
+      "profit_amount": 30000,
+      "profit_rate": 10.0,
+      "reason": "익절"
+    },
+    {
+      "transaction_id": "SELL_20250728_032101_A000660",
+      "timestamp": "2025-07-28 03:21:01",
+      "type": "sell",
+      "code": "A000660",
+      "name": "SK하이닉스",
+      "quantity": 4,
+      "price": 97000,
+      "amount": 388000,
+      "condition_seq": 0,
+      "buy_transaction_id": "BUY_20250728_032101_A000660",
+      "profit_amount": -12000,
+      "profit_rate": -3.0,
+      "reason": "손절"
+    }
+  ],
+  "daily_stats": {
+    "total_buy_count": 3,
+    "total_sell_count": 3,
+    "active_positions": 0
+  }
+}

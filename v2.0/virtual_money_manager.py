@@ -10,6 +10,107 @@ from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import dataclass, asdict
 from tabulate import tabulate
 import glob
+import uuid
+
+@dataclass
+class Trade:
+    """거래 정보 - ScalpingEngine 완전 호환"""
+    code: str = ""
+    name: str = ""
+    action: str = ""
+    quantity: int = 0
+    price: int = 0
+    amount: int = 0
+    timestamp: str = ""
+    session_id: str = ""
+    transaction_type: str = ""
+    condition_seq: str = ""
+    
+    def get_date(self) -> str:
+        """거래 날짜 반환 (YYYY-MM-DD)"""
+        if not self.timestamp:
+            return datetime.now().strftime('%Y-%m-%d')
+        
+        # 다양한 timestamp 형식 지원
+        try:
+            # ISO 형식: YYYY-MM-DD HH:MM:SS
+            if len(self.timestamp) >= 19 and '-' in self.timestamp and ':' in self.timestamp:
+                return self.timestamp.split(' ')[0]
+            # 날짜만: YYYY-MM-DD
+            elif len(self.timestamp) == 10 and '-' in self.timestamp:
+                return self.timestamp
+            # YYYYMMDD 형식
+            elif len(self.timestamp) == 8 and self.timestamp.isdigit():
+                return f"{self.timestamp[:4]}-{self.timestamp[4:6]}-{self.timestamp[6:8]}"
+            # YYYYMMDD_HHMMSS 형식
+            elif '_' in self.timestamp:
+                date_part = self.timestamp.split('_')[0]
+                if len(date_part) == 8 and date_part.isdigit():
+                    return f"{date_part[:4]}-{date_part[4:6]}-{date_part[6:8]}"
+            else:
+                # 기본값으로 파싱 시도
+                dt = datetime.strptime(self.timestamp, '%Y-%m-%d %H:%M:%S')
+                return dt.strftime('%Y-%m-%d')
+        except (ValueError, IndexError):
+            pass
+        
+        # 파싱 실패 시 현재 날짜 반환
+        return datetime.now().strftime('%Y-%m-%d')
+    
+    def __post_init__(self):
+        """자동 설정 및 호환성 처리"""
+        # timestamp 자동 생성
+        if not self.timestamp:
+            self.timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            
+        # session_id 자동 생성  
+        if not self.session_id:
+            self.session_id = str(uuid.uuid4())[:8]
+            
+        # action ↔ transaction_type 양방향 변환
+        if self.action and not self.transaction_type:
+            if self.action in ["매수", "buy"]:
+                self.transaction_type = "buy"
+            elif self.action in ["매도", "sell"]:
+                self.transaction_type = "sell"
+                
+        if self.transaction_type and not self.action:
+            if self.transaction_type == "buy":
+                self.action = "매수"
+            elif self.transaction_type == "sell":
+                self.action = "매도"
+                
+        # 기본값 설정
+        if not self.action:
+            self.action = "매수"
+        if not self.transaction_type:
+            self.transaction_type = "buy"
+                
+        # amount 자동 계산
+        if not self.amount and self.quantity and self.price:
+            self.amount = self.quantity * self.price
+            
+    def to_dict(self) -> Dict:
+        """완전한 딕셔너리 변환"""
+        return asdict(self)
+        
+    @classmethod
+    def from_dict(cls, data: Dict) -> 'Trade':
+        """안전한 딕셔너리 복원"""
+        # 필수 필드만 추출하여 안전하게 생성
+        trade_data = {}
+        for field in ["code", "name", "action", "quantity", "price", "amount", 
+                     "timestamp", "session_id", "transaction_type", "condition_seq"]:
+            trade_data[field] = data.get(field, "")
+            
+        # 숫자 필드 타입 변환
+        for field in ["quantity", "price", "amount"]:
+            try:
+                trade_data[field] = int(trade_data[field]) if trade_data[field] else 0
+            except (ValueError, TypeError):
+                trade_data[field] = 0
+                
+        return cls(**trade_data)
 
 @dataclass
 class VirtualTransaction:
@@ -100,6 +201,12 @@ class VirtualMoneyManager:
         self.buy_transactions: List[VirtualTransaction] = []
         self.sell_transactions: List[VirtualTransaction] = []
         self.daily_pnl = 0
+        
+        # 🔥 추가된 통계 속성들
+        self.cumulative_return = 0.0
+        self.total_return = 0.0
+        self.win_rate = 0.0
+        self.max_drawdown = 0.0
         
         # 오늘 거래 내역 로드 (복구 기능)
         self.load_today_transactions()
@@ -613,6 +720,13 @@ class VirtualMoneyManager:
         self.total_invested += actual_amount
         self.buy_transactions.append(transaction)
         
+        # 통계 속성 업데이트
+        current_total = self.available_cash + self.total_invested
+        self.cumulative_return = self.calculate_cumulative_return()
+        self.total_return = self.cumulative_return
+        self.max_capital = max(self.max_capital, current_total)
+        self.min_capital = min(self.min_capital, current_total)
+        
         # 🔥 자금 조정 안내
         if investment_amount != target_amount:
             print(f"[자금 조정] 목표 {target_amount:,}원 → 실제 {actual_amount:,}원")
@@ -656,9 +770,17 @@ class VirtualMoneyManager:
         self.max_capital = max(self.max_capital, current_total)
         self.min_capital = min(self.min_capital, current_total)
         
+        # 통계 속성 업데이트
+        self.cumulative_return = self.calculate_cumulative_return()
+        self.total_return = self.cumulative_return
+        self.win_rate = self.calculate_win_rate()
+        
+        # 최대 손실률 계산
+        if self.max_capital > 0:
+            self.max_drawdown = ((self.max_capital - current_total) / self.max_capital * 100)
+        
         # 🔥 실시간 수익률 출력
-        cumulative_return = ((current_total - self.original_capital) / self.original_capital * 100) if self.original_capital > 0 else 0
-        print(f"[매도 완료] 누적 수익률: {cumulative_return:+.2f}% (총액: {current_total:,}원)")
+        print(f"[매도 완료] 누적 수익률: {self.cumulative_return:+.2f}% (총액: {current_total:,}원)")
         
         self.save_daily_data()
         return transaction
@@ -928,6 +1050,103 @@ class VirtualMoneyManager:
             'total_profit': total_profit,
             'total_loss': total_loss
         }
+    
+    def get_statistics(self) -> Dict[str, Any]:
+        """🔥 완전한 통계 정보 반환"""
+        # 기본 포트폴리오 정보
+        portfolio = self.get_portfolio_value()
+        
+        # 거래 통계
+        trading_stats = self.get_trading_statistics()
+        
+        # 상세 수익률 정보
+        detailed_returns = self.calculate_detailed_returns()
+        
+        # 통합 통계 반환
+        return {
+            # 기본 정보
+            'available_cash': self.available_cash,
+            'total_invested': self.total_invested,
+            'total_value': portfolio['total_value'],
+            'daily_pnl': self.daily_pnl,
+            
+            # 수익률 정보
+            'daily_return': portfolio['daily_return'],
+            'cumulative_return': portfolio['cumulative_return'],
+            'total_return': detailed_returns['cumulative_return'],
+            'max_drawdown': detailed_returns['max_drawdown'],
+            'win_rate': trading_stats['win_rate'],
+            
+            # 거래 통계
+            'total_trades': trading_stats['total_sell_trades'],
+            'win_trades': trading_stats['win_trades'],
+            'loss_trades': trading_stats['loss_trades'],
+            'avg_profit_rate': trading_stats['avg_profit_rate'],
+            'avg_loss_rate': trading_stats['avg_loss_rate'],
+            
+            # 기간 정보
+            'cumulative_days': self.cumulative_days,
+            'original_capital': self.original_capital,
+            'max_capital': self.max_capital,
+            'min_capital': self.min_capital
+        }
+    
+    def calculate_positions_value(self) -> int:
+        """🔥 정확한 포지션 가치 계산"""
+        # 현재 보유 포지션 확인 (매수했지만 매도하지 않은 것들)
+        active_buy_transactions = []
+        
+        for buy_tx in self.buy_transactions:
+            # 이 매수 건에 대응하는 매도 건이 있는지 확인
+            is_sold = any(sell_tx.buy_transaction_id == buy_tx.transaction_id 
+                         for sell_tx in self.sell_transactions)
+            if not is_sold:
+                active_buy_transactions.append(buy_tx)
+        
+        # 보유 포지션의 총 매수 금액 반환 (현재가 정보가 없으므로)
+        total_position_value = sum(tx.amount for tx in active_buy_transactions)
+        return total_position_value
+    
+    def get_portfolio_summary(self) -> Dict[str, Any]:
+        """🔥 포트폴리오 요약 - 정확한 수치"""
+        current_total = self.available_cash + self.total_invested
+        positions_value = self.calculate_positions_value()
+        
+        # 활성 포지션 수 계산
+        active_positions = len([tx for tx in self.buy_transactions 
+                               if not any(sell.buy_transaction_id == tx.transaction_id 
+                                         for sell in self.sell_transactions)])
+        
+        return {
+            'available_cash': self.available_cash,
+            'total_invested': self.total_invested,
+            'positions_value': positions_value,
+            'total_value': current_total,
+            'active_positions': active_positions,
+            'daily_pnl': self.daily_pnl,
+            'daily_return': (self.daily_pnl / self.initial_capital * 100) if self.initial_capital > 0 else 0,
+            'cumulative_return': ((current_total - self.original_capital) / self.original_capital * 100) if self.original_capital > 0 else 0,
+            'cumulative_days': self.cumulative_days,
+            'max_capital': self.max_capital,
+            'min_capital': self.min_capital,
+            'original_capital': self.original_capital
+        }
+    
+    def calculate_win_rate(self) -> float:
+        """🔥 정확한 승률 계산"""
+        total_trades = len(self.sell_transactions)
+        if total_trades == 0:
+            return 0.0
+            
+        win_trades = len([tx for tx in self.sell_transactions if tx.profit_amount > 0])
+        return (win_trades / total_trades) * 100
+    
+    def calculate_cumulative_return(self) -> float:
+        """🔥 누적 수익률 정확 계산"""
+        current_total = self.available_cash + self.total_invested
+        if self.original_capital <= 0:
+            return 0.0
+        return ((current_total - self.original_capital) / self.original_capital) * 100
     
     def print_transaction_history(self, limit: int = 10):
         """거래 내역 출력"""
