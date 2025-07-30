@@ -1,6 +1,6 @@
 """
-🔥 V5.6 가상 자금 관리 시스템 - 테스트/실전 모드 분리 + 일별 수익률 테이블
-Test/Live mode separation with beautiful daily return table analysis
+🔥 V2.3 가상 자금 관리 시스템 - 누적 수익률 강화 + 백테스팅 분석
+Real-time cumulative returns tracking with comprehensive backtesting analysis
 """
 
 import json
@@ -9,7 +9,6 @@ from datetime import datetime, timedelta
 from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import dataclass, asdict
 from tabulate import tabulate
-from pathlib import Path
 import glob
 
 @dataclass
@@ -58,250 +57,12 @@ class PeriodAnalysis:
     total_trades: int
     trading_days: int
 
-class ModeManager:
-    """🔥 V5.6 테스트/실전 모드 관리 시스템"""
-    
-    @staticmethod
-    def get_mode_data_dir(base_dir: str = "virtual_money_data", mode: str = "test") -> str:
-        """모드별 데이터 디렉토리 경로 반환"""
-        from pathlib import Path
-        
-        if mode == "live":
-            return str(Path(base_dir) / "live_mode")
-        else:  # test mode (default)
-            return str(Path(base_dir) / "test_mode")
-    
-    @staticmethod
-    def ensure_mode_directories(base_dir: str = "virtual_money_data"):
-        """모드별 디렉토리 생성"""
-        test_dir = ModeManager.get_mode_data_dir(base_dir, "test")
-        live_dir = ModeManager.get_mode_data_dir(base_dir, "live")
-        
-        for directory in [test_dir, live_dir]:
-            if not os.path.exists(directory):
-                os.makedirs(directory, exist_ok=True)
-    
-    @staticmethod
-    def get_available_modes():
-        """사용 가능한 모드 목록"""
-        return ["test", "live"]
-    
-    @staticmethod
-    def validate_mode(mode: str) -> str:
-        """모드 유효성 검증 및 정규화"""
-        if mode.lower() in ["test", "testing"]:
-            return "test"
-        elif mode.lower() in ["live", "real", "production"]:
-            return "live"
-        else:
-            return "test"  # 기본값
-
-class AdvancedTableFormatter:
-    """🔥 V5.6 아름다운 Box Drawing 테이블 포매터"""
-    
-    # Box Drawing Characters
-    TOP_LEFT = "┌"
-    TOP_RIGHT = "┐"
-    BOTTOM_LEFT = "└"
-    BOTTOM_RIGHT = "┘"
-    HORIZONTAL = "─"
-    VERTICAL = "│"
-    CROSS = "┼"
-    T_DOWN = "┬"
-    T_UP = "┴"
-    T_RIGHT = "├"
-    T_LEFT = "┤"
-    
-    @staticmethod
-    def format_currency(amount: int) -> str:
-        """통화 포맷팅"""
-        if amount == 0:
-            return "-원"
-        return f"{amount:+,}원" if amount != 0 else "0원"
-    
-    @staticmethod
-    def format_percentage(rate: float) -> str:
-        """퍼센티지 포맷팅"""
-        if rate == 0:
-            return "0.00%"
-        return f"{rate:+.2f}%"
-    
-    @staticmethod
-    def create_header_box(title: str, width: int = 87) -> str:
-        """헤더 박스 생성"""
-        inner_width = width - 2
-        title_padded = title.center(inner_width)
-        
-        top_line = AdvancedTableFormatter.TOP_LEFT + AdvancedTableFormatter.HORIZONTAL * inner_width + AdvancedTableFormatter.TOP_RIGHT
-        content_line = AdvancedTableFormatter.VERTICAL + title_padded + AdvancedTableFormatter.VERTICAL
-        bottom_line = AdvancedTableFormatter.BOTTOM_LEFT + AdvancedTableFormatter.HORIZONTAL * inner_width + AdvancedTableFormatter.BOTTOM_RIGHT
-        
-        return f"{top_line}\n{content_line}\n{bottom_line}"
-    
-    @staticmethod
-    def create_summary_box(content: str, width: int = 87) -> str:
-        """요약 박스 생성"""
-        lines = content.split('\n')
-        inner_width = width - 2
-        
-        result = []
-        result.append(AdvancedTableFormatter.TOP_LEFT + AdvancedTableFormatter.HORIZONTAL * inner_width + AdvancedTableFormatter.TOP_RIGHT)
-        
-        for i, line in enumerate(lines):
-            if i == 0:
-                padded_line = line.center(inner_width)
-            else:
-                padded_line = line.ljust(inner_width)
-            result.append(AdvancedTableFormatter.VERTICAL + padded_line + AdvancedTableFormatter.VERTICAL)
-            
-            if i == 0 and len(lines) > 1:
-                result.append(AdvancedTableFormatter.T_RIGHT + AdvancedTableFormatter.HORIZONTAL * inner_width + AdvancedTableFormatter.T_LEFT)
-        
-        result.append(AdvancedTableFormatter.BOTTOM_LEFT + AdvancedTableFormatter.HORIZONTAL * inner_width + AdvancedTableFormatter.BOTTOM_RIGHT)
-        
-        return '\n'.join(result)
-
-class DailyPerformanceAnalyzer:
-    """🔥 V5.6 일별 성과 분석 전문 클래스"""
-    
-    def __init__(self, transactions: List[VirtualTransaction], daily_history: List[DailyReturn]):
-        self.transactions = transactions
-        self.daily_history = daily_history
-    
-    def analyze_daily_performance(self) -> Dict[str, Any]:
-        """일별 성과 분석"""
-        if not self.daily_history:
-            return self._empty_analysis()
-        
-        # 기본 통계
-        total_days = len(self.daily_history)
-        profit_days = len([d for d in self.daily_history if d.daily_pnl > 0])
-        loss_days = len([d for d in self.daily_history if d.daily_pnl < 0])
-        break_even_days = total_days - profit_days - loss_days
-        
-        # 수익률 통계
-        daily_returns = [d.daily_return for d in self.daily_history]
-        max_return = max(daily_returns) if daily_returns else 0
-        min_return = min(daily_returns) if daily_returns else 0
-        avg_return = sum(daily_returns) / len(daily_returns) if daily_returns else 0
-        
-        # 수익 통계
-        daily_pnls = [d.daily_pnl for d in self.daily_history]
-        max_profit = max(daily_pnls) if daily_pnls else 0
-        max_loss = min(daily_pnls) if daily_pnls else 0
-        avg_pnl = sum(daily_pnls) / len(daily_pnls) if daily_pnls else 0
-        
-        # 연승/연패 분석
-        win_streak, loss_streak = self._analyze_streaks()
-        
-        # 변동성 계산 (표준편차)
-        if len(daily_returns) > 1:
-            variance = sum((r - avg_return) ** 2 for r in daily_returns) / (len(daily_returns) - 1)
-            volatility = variance ** 0.5
-        else:
-            volatility = 0
-        
-        # 샤프 비율 (간단 버전)
-        sharpe_ratio = avg_return / volatility if volatility > 0 else 0
-        
-        return {
-            'total_days': total_days,
-            'profit_days': profit_days,
-            'loss_days': loss_days,
-            'break_even_days': break_even_days,
-            'win_rate': (profit_days / total_days * 100) if total_days > 0 else 0,
-            'max_return': max_return,
-            'min_return': min_return,
-            'avg_return': avg_return,
-            'max_profit': max_profit,
-            'max_loss': max_loss,
-            'avg_pnl': avg_pnl,
-            'volatility': volatility,
-            'sharpe_ratio': sharpe_ratio,
-            'win_streak': win_streak,
-            'loss_streak': loss_streak
-        }
-    
-    def _analyze_streaks(self) -> Tuple[Dict, Dict]:
-        """연승/연패 분석"""
-        if not self.daily_history:
-            return {'count': 0, 'start': '', 'end': ''}, {'count': 0, 'start': '', 'end': ''}
-        
-        current_win_streak = 0
-        current_loss_streak = 0
-        max_win_streak = {'count': 0, 'start': '', 'end': ''}
-        max_loss_streak = {'count': 0, 'start': '', 'end': ''}
-        
-        win_start = ''
-        loss_start = ''
-        
-        for daily in self.daily_history:
-            if daily.daily_pnl > 0:  # 수익일
-                if current_win_streak == 0:
-                    win_start = daily.date
-                current_win_streak += 1
-                current_loss_streak = 0
-                
-                if current_win_streak > max_win_streak['count']:
-                    max_win_streak = {
-                        'count': current_win_streak,
-                        'start': win_start,
-                        'end': daily.date
-                    }
-            elif daily.daily_pnl < 0:  # 손실일
-                if current_loss_streak == 0:
-                    loss_start = daily.date
-                current_loss_streak += 1
-                current_win_streak = 0
-                
-                if current_loss_streak > max_loss_streak['count']:
-                    max_loss_streak = {
-                        'count': current_loss_streak,
-                        'start': loss_start,
-                        'end': daily.date
-                    }
-            else:  # 보합일
-                current_win_streak = 0
-                current_loss_streak = 0
-        
-        return max_win_streak, max_loss_streak
-    
-    def _empty_analysis(self) -> Dict[str, Any]:
-        """빈 분석 결과"""
-        return {
-            'total_days': 0, 'profit_days': 0, 'loss_days': 0, 'break_even_days': 0,
-            'win_rate': 0, 'max_return': 0, 'min_return': 0, 'avg_return': 0,
-            'max_profit': 0, 'max_loss': 0, 'avg_pnl': 0,
-            'volatility': 0, 'sharpe_ratio': 0,
-            'win_streak': {'count': 0, 'start': '', 'end': ''},
-            'loss_streak': {'count': 0, 'start': '', 'end': ''}
-        }
-
 class VirtualMoneyManager:
-    """🔥 V5.6 테스트/실전 모드 분리 + 일별 수익률 테이블 가상 자금 관리 시스템"""
+    """🔥 누적 수익률 강화 + 백테스팅 분석 가상 자금 관리 시스템"""
     
-    def __init__(self, initial_capital: int = 500_000, save_dir: str = "virtual_money_data", 
-                 mode: str = "test", config=None, data_dir: str = None):
-        # 🔥 V5.6 모드 시스템 - 기존 호환성 보장
-        self.mode = ModeManager.validate_mode(mode)
-        
-        # 데이터 디렉토리 결정 (mode에 따른 분리)
-        if data_dir:
-            # data_dir이 명시적으로 주어진 경우 (기존 방식 호환)
-            self.save_dir = data_dir
-        else:
-            # 새로운 모드 분리 시스템
-            base_dir = save_dir or "virtual_money_data"
-            self.save_dir = ModeManager.get_mode_data_dir(base_dir, self.mode)
-        
-        # 모드별 디렉토리 생성
-        ModeManager.ensure_mode_directories(save_dir)
+    def __init__(self, initial_capital: int = 500_000, save_dir: str = "virtual_money_data"):
+        self.save_dir = save_dir
         self.ensure_save_dir()
-        
-        # 모드 정보 표시
-        mode_emoji = "🧪" if self.mode == "test" else "🚀"
-        mode_name = "테스트" if self.mode == "test" else "실전"
-        print(f"[{mode_emoji} {mode_name} 모드] 데이터 경로: {self.save_dir}")
         
         # 🔥 전날 결과 및 히스토리 로드 (누적 방식)
         previous_result = self.load_previous_day_result()
@@ -1103,163 +864,6 @@ class VirtualMoneyManager:
         """🔥 누적 자금 현황 출력 (상세 수익률 포함)"""
         self.print_detailed_returns()  # 상세 수익률 정보 출력
     
-    def show_beautiful_daily_return_table(self):
-        """🔥 V5.6 아름다운 일별 수익률 테이블 표시"""
-        print("\n" + "="*90)
-        
-        # 분석 데이터 준비
-        analyzer = DailyPerformanceAnalyzer(
-            self.buy_transactions + self.sell_transactions, 
-            self.daily_returns_history
-        )
-        analysis = analyzer.analyze_daily_performance()
-        
-        # 헤더 박스
-        today = datetime.now().strftime('%Y-%m-%d')
-        header_title = f"🎯 {today} 일별 수익률 현황"
-        print(AdvancedTableFormatter.create_header_box(header_title))
-        
-        # 요약 통계 박스
-        summary_content = (
-            f"📊 총 거래: {analysis['total_days']}일 | "
-            f"수익일: {analysis['profit_days']}일 ({analysis['win_rate']:.1f}%) | "
-            f"손실일: {analysis['loss_days']}일 ({analysis['loss_days']/max(analysis['total_days'], 1)*100:.1f}%) | "
-            f"보합일: {analysis['break_even_days']}일 ({analysis['break_even_days']/max(analysis['total_days'], 1)*100:.1f}%)"
-        )
-        print(AdvancedTableFormatter.create_summary_box(summary_content))
-        print()
-        
-        # 일별 데이터 테이블
-        if self.daily_returns_history:
-            self._print_daily_data_table()
-        else:
-            print("📊 아직 일별 수익률 데이터가 없습니다.")
-        print()
-        
-        # 상세 통계 박스
-        stats_title = "📊 상세 통계"
-        stats_content = f"""{stats_title}
-📈 최고 일별 수익률: {AdvancedTableFormatter.format_percentage(analysis['max_return'])}        │ 💰 최고 일별 수익: {AdvancedTableFormatter.format_currency(analysis['max_profit'])}
-📉 최저 일별 수익률: {AdvancedTableFormatter.format_percentage(analysis['min_return'])}         │ 💔 최저 일별 손실: {AdvancedTableFormatter.format_currency(analysis['max_loss'])}
-⚡ 평균 일별 수익률: {AdvancedTableFormatter.format_percentage(analysis['avg_return'])}          │ 💵 평균 일별 수익: {AdvancedTableFormatter.format_currency(int(analysis['avg_pnl']))}"""
-        
-        print(AdvancedTableFormatter.create_summary_box(stats_content))
-        print()
-        
-        # 승부 분석 박스
-        battle_title = "🔥 승부 분석"
-        win_streak = analysis['win_streak']
-        loss_streak = analysis['loss_streak']
-        
-        win_text = f"{win_streak['count']}일 연속"
-        if win_streak['count'] > 0:
-            win_text += f" ({win_streak['start']} ~ {win_streak['end']})"
-        
-        loss_text = f"{loss_streak['count']}일 연속"
-        if loss_streak['count'] > 0:
-            loss_text += f" ({loss_streak['start']} ~ {loss_streak['end']})"
-        
-        battle_content = f"""{battle_title}
-✅ 연승 최대: {win_text}
-❌ 연패 최대: {loss_text}
-📊 변동성: {analysis['volatility']:.2f}% (일별 수익률 표준편차)
-🎯 샤프 비율: {analysis['sharpe_ratio']:.2f} (위험 대비 수익 비율)"""
-        
-        print(AdvancedTableFormatter.create_summary_box(battle_content))
-        print("="*90)
-    
-    def _print_daily_data_table(self):
-        """일별 데이터 테이블 출력"""
-        headers = ["날짜", "매수금액", "매도금액", "일별손익", "일별수익률", "누적수익률", "거래건수"]
-        
-        # 테이블 헤더 박스 라인
-        col_widths = [11, 12, 12, 12, 12, 12, 8]
-        
-        # 상단 라인
-        top_line = AdvancedTableFormatter.TOP_LEFT
-        for i, width in enumerate(col_widths):
-            top_line += AdvancedTableFormatter.HORIZONTAL * width
-            if i < len(col_widths) - 1:
-                top_line += AdvancedTableFormatter.T_DOWN
-        top_line += AdvancedTableFormatter.TOP_RIGHT
-        print(top_line)
-        
-        # 헤더 라인
-        header_line = AdvancedTableFormatter.VERTICAL
-        for i, (header, width) in enumerate(zip(headers, col_widths)):
-            header_line += header.center(width)
-            header_line += AdvancedTableFormatter.VERTICAL
-        print(header_line)
-        
-        # 헤더 구분 라인
-        sep_line = AdvancedTableFormatter.T_RIGHT
-        for i, width in enumerate(col_widths):
-            sep_line += AdvancedTableFormatter.HORIZONTAL * width
-            if i < len(col_widths) - 1:
-                sep_line += AdvancedTableFormatter.CROSS
-        sep_line += AdvancedTableFormatter.T_LEFT
-        print(sep_line)
-        
-        # 데이터 라인들
-        total_buy = total_sell = total_pnl = total_trades = 0
-        
-        for daily in self.daily_returns_history[-15:]:  # 최근 15일
-            # 해당 날짜의 거래 데이터 계산 (실제 구현시 필요)
-            buy_amount = 0  # 실제로는 해당 날짜 매수 금액 계산
-            sell_amount = 0  # 실제로는 해당 날짜 매도 금액 계산
-            trades_count = daily.trades_count
-            
-            total_buy += buy_amount
-            total_sell += sell_amount
-            total_pnl += daily.daily_pnl
-            total_trades += trades_count
-            
-            row_data = [
-                daily.date,
-                AdvancedTableFormatter.format_currency(buy_amount),
-                AdvancedTableFormatter.format_currency(sell_amount),
-                AdvancedTableFormatter.format_currency(daily.daily_pnl),
-                AdvancedTableFormatter.format_percentage(daily.daily_return),
-                AdvancedTableFormatter.format_percentage(daily.cumulative_return),
-                f"{trades_count}건"
-            ]
-            
-            row_line = AdvancedTableFormatter.VERTICAL
-            for data, width in zip(row_data, col_widths):
-                row_line += str(data).center(width)
-                row_line += AdvancedTableFormatter.VERTICAL
-            print(row_line)
-        
-        # 합계 구분 라인
-        print(sep_line)
-        
-        # 합계 라인
-        total_return = (total_pnl / max(self.original_capital, 1)) * 100
-        total_row = [
-            "합계",
-            AdvancedTableFormatter.format_currency(total_buy),
-            AdvancedTableFormatter.format_currency(total_sell),
-            AdvancedTableFormatter.format_currency(total_pnl),
-            AdvancedTableFormatter.format_percentage(total_return),
-            AdvancedTableFormatter.format_percentage(total_return),
-            f"{total_trades}건"
-        ]
-        
-        row_line = AdvancedTableFormatter.VERTICAL
-        for data, width in zip(total_row, col_widths):
-            row_line += str(data).center(width)
-            row_line += AdvancedTableFormatter.VERTICAL
-        print(row_line)
-        
-        # 하단 라인
-        bottom_line = AdvancedTableFormatter.BOTTOM_LEFT
-        for i, width in enumerate(col_widths):
-            bottom_line += AdvancedTableFormatter.HORIZONTAL * width
-            if i < len(col_widths) - 1:
-                bottom_line += AdvancedTableFormatter.T_UP
-        bottom_line += AdvancedTableFormatter.BOTTOM_RIGHT
-        print(bottom_line)
-    
     def save_daily_data(self):
         """일별 데이터 저장"""
         today_str = datetime.now().strftime('%Y%m%d')
@@ -1401,12 +1005,10 @@ class VirtualMoneyManager:
             print("❌ 초기화가 취소되었습니다.")
     
     def show_menu(self):
-        """🔥 V5.6 백테스팅 전용 대화형 메뉴 표시 (모드 분리 + 일별 수익률 테이블)"""
+        """🔥 백테스팅 전용 대화형 메뉴 표시"""
         while True:
             print(f"\n{'='*70}")
-            mode_emoji = "🧪" if self.mode == "test" else "🚀"
-            mode_name = "테스트" if self.mode == "test" else "실전"
-            print(f"📊 가상 자금 관리 시스템 V5.6 - {mode_emoji} {mode_name} 모드")
+            print(f"📊 가상 자금 관리 시스템 - 백테스팅 분석 (V2.3)")
             print(f"{'='*70}")
             
             # 간단한 현재 상태
@@ -1421,14 +1023,12 @@ class VirtualMoneyManager:
             print(f"3. 📈 전체 통계 요약")
             print(f"4. 🔍 거래 패턴 분석")
             print(f"5. 📈 최근 성과 차트")
-            print(f"6. 🎯 아름다운 일별 수익률 테이블 (NEW!)")
-            print(f"7. 📝 하루 마감 처리")
-            print(f"8. ⚠️  모든 데이터 초기화")
-            print(f"9. 🔄 모드 전환 ({mode_emoji}→{'🚀' if self.mode == 'test' else '🧪'})")
+            print(f"6. 📝 하루 마감 처리")
+            print(f"7. ⚠️  모든 데이터 초기화")
             print(f"0. 🚪 종료")
             
             try:
-                choice = input(f"\n선택하세요 (0-9): ").strip()
+                choice = input(f"\n선택하세요 (0-7): ").strip()
                 
                 if choice == '0':
                     print("👋 가상 자금 관리 시스템을 종료합니다.")
@@ -1444,58 +1044,18 @@ class VirtualMoneyManager:
                 elif choice == '5':
                     self.print_recent_performance()
                 elif choice == '6':
-                    self.show_beautiful_daily_return_table()
-                elif choice == '7':
                     self.finalize_day()
                     print("✅ 하루 마감 처리 완료!")
-                elif choice == '8':
+                elif choice == '7':
                     self.reset_virtual_money()
-                elif choice == '9':
-                    self._switch_mode()
                 else:
-                    print("❌ 올바른 번호를 입력해주세요. (0-9)")
+                    print("❌ 올바른 번호를 입력해주세요. (0-7)")
                     
             except KeyboardInterrupt:
                 print(f"\n\n👋 사용자가 종료를 요청했습니다.")
                 break
             except Exception as e:
                 print(f"❌ 오류 발생: {e}")
-    
-    def _switch_mode(self):
-        """모드 전환 기능"""
-        current_mode = self.mode
-        new_mode = "live" if current_mode == "test" else "test"
-        
-        mode_emoji_current = "🧪" if current_mode == "test" else "🚀"
-        mode_emoji_new = "🧪" if new_mode == "test" else "🚀"
-        mode_name_current = "테스트" if current_mode == "test" else "실전"
-        mode_name_new = "테스트" if new_mode == "test" else "실전"
-        
-        print(f"\n{mode_emoji_current} {mode_name_current} 모드에서 {mode_emoji_new} {mode_name_new} 모드로 전환하시겠습니까?")
-        print(f"⚠️  현재 세션이 종료되고 새로운 모드로 시작됩니다.")
-        
-        confirm = input("전환하시겠습니까? (y/N): ").strip().lower()
-        if confirm in ['y', 'yes']:
-            print(f"🔄 {mode_emoji_new} {mode_name_new} 모드로 전환 중...")
-            self.__init__(self.original_capital, mode=new_mode)
-            print(f"✅ {mode_emoji_new} {mode_name_new} 모드로 전환 완료!")
-        else:
-            print("❌ 모드 전환이 취소되었습니다.")
-
-# ================================================================================
-# 🔥 V5.6 모드별 전역 함수 (기존 호환성 보장)
-# ================================================================================
-
-def get_virtual_money_manager_by_mode(mode: str = "test", initial_capital: int = 500_000) -> VirtualMoneyManager:
-    """모드별 VirtualMoneyManager 인스턴스 반환"""
-    return VirtualMoneyManager(initial_capital=initial_capital, mode=mode)
-
-def get_virtual_money_manager(initial_capital: int = 500_000, data_dir: str = None) -> VirtualMoneyManager:
-    """기존 호환성을 위한 전역 함수 (기본 테스트 모드)"""
-    if data_dir:
-        return VirtualMoneyManager(initial_capital=initial_capital, data_dir=data_dir)
-    else:
-        return VirtualMoneyManager(initial_capital=initial_capital, mode="test")
 
 # ================================================================================
 # 메인 실행부 (백테스팅 분석 메뉴)
@@ -1503,12 +1063,12 @@ def get_virtual_money_manager(initial_capital: int = 500_000, data_dir: str = No
 
 if __name__ == "__main__":
     def main():
-        print("🔥 V5.6 가상 자금 관리 시스템 - 테스트/실전 모드 분리 + 일별 수익률 테이블")
-        print("="*80)
+        print("🔥 V2.3 누적 수익률 강화 + 백테스팅 분석 시스템")
+        print("="*70)
         
         try:
-            # VirtualMoneyManager 생성 (기본 테스트 모드)
-            manager = VirtualMoneyManager(mode="test")
+            # VirtualMoneyManager 생성
+            manager = VirtualMoneyManager()
             
             # 백테스팅 분석 메뉴 실행
             manager.show_menu()

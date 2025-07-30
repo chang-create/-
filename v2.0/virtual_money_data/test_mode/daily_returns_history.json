@@ -1,0 +1,92 @@
+[
+  {
+    "date": "2025-07-20",
+    "start_capital": 500000,
+    "end_capital": 500000,
+    "daily_pnl": 0,
+    "daily_return": 0.0,
+    "cumulative_return": 0.0,
+    "trades_count": 2
+  },
+  {
+    "date": "2025-07-21",
+    "start_capital": 500000,
+    "end_capital": 505000,
+    "daily_pnl": 5000,
+    "daily_return": 1.0,
+    "cumulative_return": 1.0,
+    "trades_count": 3
+  },
+  {
+    "date": "2025-07-22",
+    "start_capital": 505000,
+    "end_capital": 530000,
+    "daily_pnl": 25000,
+    "daily_return": 4.9504950495049505,
+    "cumulative_return": 6.0,
+    "trades_count": 4
+  },
+  {
+    "date": "2025-07-23",
+    "start_capital": 530000,
+    "end_capital": 515000,
+    "daily_pnl": -15000,
+    "daily_return": -2.8301886792452833,
+    "cumulative_return": 3.0,
+    "trades_count": 2
+  },
+  {
+    "date": "2025-07-24",
+    "start_capital": 515000,
+    "end_capital": 540000,
+    "daily_pnl": 25000,
+    "daily_return": 4.854368932038835,
+    "cumulative_return": 8.0,
+    "trades_count": 3
+  },
+  {
+    "date": "2025-07-25",
+    "start_capital": 540000,
+    "end_capital": 545000,
+    "daily_pnl": 5000,
+    "daily_return": 0.9259259259259258,
+    "cumulative_return": 9.0,
+    "trades_count": 4
+  },
+  {
+    "date": "2025-07-26",
+    "start_capital": 545000,
+    "end_capital": 530000,
+    "daily_pnl": -15000,
+    "daily_return": -2.7522935779816518,
+    "cumulative_return": 6.0,
+    "trades_count": 2
+  },
+  {
+    "date": "2025-07-27",
+    "start_capital": 530000,
+    "end_capital": 535000,
+    "daily_pnl": 5000,
+    "daily_return": 0.9433962264150944,
+    "cumulative_return": 7.000000000000001,
+    "trades_count": 3
+  },
+  {
+    "date": "2025-07-28",
+    "start_capital": 535000,
+    "end_capital": 560000,
+    "daily_pnl": 25000,
+    "daily_return": 4.672897196261682,
+    "cumulative_return": 12.0,
+    "trades_count": 4
+  },
+  {
+    "date": "2025-07-29",
+    "start_capital": 560000,
+    "end_capital": 545000,
+    "daily_pnl": -15000,
+    "daily_return": -2.6785714285714284,
+    "cumulative_return": 9.0,
+    "trades_count": 2
+  }
+]
